@@ -1,0 +1,31 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build outputs
+bin/
+obj/
+Debug/
+Release/
+
+# Logs
+*.log
+
+# Database files
+*.mdf
+*.ldf
+
+# Publish
+publish/
+*.pubxml
+
+# Frontend
+node_modules/
+dist/
+
+# OS files
+Thumbs.db
+.DS_Store

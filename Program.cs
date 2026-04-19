@@ -5,6 +5,21 @@ using TODOApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Enable FrontEnd
+
+var AllowFrontend = "_allowFrontend";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: AllowFrontend,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -31,6 +46,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(AllowFrontend);
 
 app.UseAuthorization();
 

@@ -29,3 +29,8 @@ dist/
 # OS files
 Thumbs.db
 .DS_Store
+
+# SQLite databáze - generuje se lokálnì z migrací
+*.db
+*.db-shm
+*.db-wal

@@ -13,16 +13,18 @@ namespace TODOApp.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<TodoItem>> GetAllAsync()
+        public async Task<IEnumerable<TodoItem>> GetAllForUserAsync(string userId)
         {
             return await _context.TodoItems
-                 .AsNoTracking()
-                 .ToListAsync();
+                .Where(t => t.UserId == userId)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
-        public async Task<TodoItem?> GetByIdAsync(int id)
+        public async Task<TodoItem?> GetByIdForUserAsync(int id, string userId)
         {
-            return await _context.TodoItems.FindAsync(id);
+            return await _context.TodoItems
+                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
         }
 
         public async Task<TodoItem> AddAsync(TodoItem todoItem)
@@ -43,8 +45,5 @@ namespace TODOApp.Repositories
             _context.TodoItems.Remove(todoItem);
             await _context.SaveChangesAsync();
         }
-
     }
-
 }
-

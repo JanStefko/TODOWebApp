@@ -4,7 +4,7 @@ using TODOApp.Repositories;
 
 namespace TODOApp.Services
 {
-    public class TodoService: ITodoService
+    public class TodoService : ITodoService
     {
         private readonly ITodoRepository _todoRepository;
 
@@ -13,9 +13,9 @@ namespace TODOApp.Services
             _todoRepository = todoRepository;
         }
 
-        public async Task<IEnumerable<TodoItemDto>> GetAllAsync()
+        public async Task<IEnumerable<TodoItemDto>> GetAllAsync(string userId)
         {
-            var todos = await _todoRepository.GetAllAsync();
+            var todos = await _todoRepository.GetAllForUserAsync(userId);
 
             return todos.Select(todo => new TodoItemDto
             {
@@ -25,9 +25,9 @@ namespace TODOApp.Services
             });
         }
 
-        public async Task<TodoItemDto?> GetByIdAsync(int id)
+        public async Task<TodoItemDto?> GetByIdAsync(int id, string userId)
         {
-            var todo = await _todoRepository.GetByIdAsync(id);
+            var todo = await _todoRepository.GetByIdForUserAsync(id, userId);
 
             if (todo == null)
             {
@@ -42,12 +42,13 @@ namespace TODOApp.Services
             };
         }
 
-        public async Task<TodoItemDto> CreateAsync(CreateTodoItemDto createTodoDto)
+        public async Task<TodoItemDto> CreateAsync(CreateTodoItemDto createTodoDto, string userId)
         {
             var todoItem = new TodoItem
             {
                 Title = createTodoDto.Title,
-                IsCompleted = false
+                IsCompleted = false,
+                UserId = userId
             };
 
             var createdTodo = await _todoRepository.AddAsync(todoItem);
@@ -60,9 +61,9 @@ namespace TODOApp.Services
             };
         }
 
-        public async Task<bool> UpdateAsync(int id, UpdateTodoItemDto updateTodoDto)
+        public async Task<bool> UpdateAsync(int id, UpdateTodoItemDto updateTodoDto, string userId)
         {
-            var existingTodo = await _todoRepository.GetByIdAsync(id);
+            var existingTodo = await _todoRepository.GetByIdForUserAsync(id, userId);
 
             if (existingTodo == null)
             {
@@ -77,9 +78,9 @@ namespace TODOApp.Services
             return true;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id, string userId)
         {
-            var existingTodo = await _todoRepository.GetByIdAsync(id);
+            var existingTodo = await _todoRepository.GetByIdForUserAsync(id, userId);
 
             if (existingTodo == null)
             {

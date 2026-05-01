@@ -74,6 +74,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddScoped<ITodoService, TodoService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Swagger s podporou JWT
 builder.Services.AddEndpointsApiExplorer();
@@ -113,8 +114,10 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
     db.Database.Migrate();
-    DbInitializer.Seed(db);
+    await DbInitializer.SeedAsync(db, userManager);
 }
 
 // HTTP pipeline

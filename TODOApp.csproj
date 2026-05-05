@@ -4,7 +4,8 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-	</PropertyGroup>
+	  <UserSecretsId>6541ffe5-44a9-4142-ae33-977585d31e4e</UserSecretsId>
+  </PropertyGroup>
 	
 	<ItemGroup>
 		<Compile Remove="TODOApp.Tests/**" />
